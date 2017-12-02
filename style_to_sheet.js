@@ -42,6 +42,7 @@ Optionally set a prefix for rule-selectors:
 
 
 
+
 Why
 ---
 
@@ -76,6 +77,8 @@ Provide function for downloading stylesheet.
 
 Variable names and structures
 -----------------------------
+
+
 
   selector     = 'body > div'
 
@@ -147,6 +150,7 @@ var styleToSheet = {
     else {
       // Add new rule:
       this.rules.push([selector, props])
+    
       // Collect selector:
       this.selectors.push(selector)
     }
@@ -168,16 +172,20 @@ var styleToSheet = {
 
 
   downloadStyles: function(fileName='styles.css') {
-    var a = addEle(document.body, 'Download styles', 'a')
+    var a = document.createElement('a')
+    a.innerHTML = 'Download styles'
     a.setAttribute('download', fileName)
-    a.href = 'data:application/csv;charset=utf-8,'
+    a.href = 'data:application/css;charset=utf-8,'
             + encodeURIComponent(this.getStyles())
-    a.click()
+    a.style = 'position: fixed; left: 27px; top: 27px; padding: 3em; \
+               background: #e2e2e2; color: green; font-size: 1.81em; \
+               border-radius: 0.27em;'
+    document.body.appendChild(a)
   },
 
 
   getRules: function() {
-    var rules = getStyles().split('}')
+    var rules = this.getStyles().split('}')
     return rules
   },
 
@@ -217,6 +225,8 @@ var styleToSheet = {
         styles += ';\n'
       }
       styles += '}\n'
+
+    
     }
     this.styleEle.innerHTML = styles
   },

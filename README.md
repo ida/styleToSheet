@@ -18,24 +18,24 @@ all the properties defined below. The most important ones are:
 
 Add a css-rule to stylesheet:
 
-  styleToSheet.addRule('div a', 'padding: 0; color: green;')
+    styleToSheet.addRule('div a', 'padding: 0; color: green;')
 
 
 When you're done with styling, add this in your script and reload
 page to download the stylesheet for production:
 
-  styleToSheet.downloadStyles()
+    styleToSheet.downloadStyles()
 
 
 For comfortably reading the stylesheet at any point of development,
 display them in the body-ele:
 
-  styleToSheet.showStyles()
+    styleToSheet.showStyles()
 
 
 Optionally set a prefix for rule-selectors:
 
-  styleToSheet.prefix = '.prefixAllSelectorsWithThis'
+    styleToSheet.prefix = '.prefixAllSelectorsWithThis'
 
 
 
