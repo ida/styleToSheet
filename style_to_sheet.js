@@ -114,12 +114,6 @@ var styleToSheet = {
   prefix: '',     //    optionally prefix all rules with a selector
 
 
-  addEle: function(parentEle, tagName='div') {
-    var ele = document.createElement(tagName)
-    parentEle.appendChild(ele)
-    return ele
-  },
-
   addRule: function(selector, style) {
 
     // Initially add style-ele when first rule is added:
@@ -178,12 +172,15 @@ var styleToSheet = {
 
 
   downloadStyles: function(fileName='styles.css') {
-    var a = this.addEle(document.body, 'a')
+    var a = document.createElement('a')
     a.innerHTML = 'Download styles'
     a.setAttribute('download', fileName)
-    a.href = 'data:application/csv;charset=utf-8,'
+    a.href = 'data:application/css;charset=utf-8,'
             + encodeURIComponent(this.getStyles())
-    a.click()
+    a.style = 'position: fixed; left: 27px; top: 27px; padding: 3em; \
+               background: #e2e2e2; color: green; font-size: 1.81em; \
+               border-radius: 0.27em;'
+    document.body.appendChild(a)
   },
 
 
