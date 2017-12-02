@@ -42,6 +42,7 @@ Optionally set a prefix for rule-selectors:
 
 
 
+
 Why
 ---
 
@@ -77,6 +78,8 @@ Provide function for downloading stylesheet.
 Variable names and structures
 -----------------------------
 
+
+
   selector     = 'body > div'
 
   style        = 'background: red; color: green;'
@@ -110,6 +113,12 @@ var styleToSheet = {
   styleEle: null,  //   output rules on any changement in this ele
   prefix: '',     //    optionally prefix all rules with a selector
 
+
+  addEle: function(parentEle, tagName='div') {
+    var ele = document.createElement(tagName)
+    parentEle.appendChild(ele)
+    return ele
+  },
 
   addRule: function(selector, style) {
 
@@ -147,6 +156,7 @@ var styleToSheet = {
     else {
       // Add new rule:
       this.rules.push([selector, props])
+    
       // Collect selector:
       this.selectors.push(selector)
     }
@@ -168,7 +178,8 @@ var styleToSheet = {
 
 
   downloadStyles: function(fileName='styles.css') {
-    var a = addEle(document.body, 'Download styles', 'a')
+    var a = this.addEle(document.body, 'a')
+    a.innerHTML = 'Download styles'
     a.setAttribute('download', fileName)
     a.href = 'data:application/csv;charset=utf-8,'
             + encodeURIComponent(this.getStyles())
@@ -177,7 +188,7 @@ var styleToSheet = {
 
 
   getRules: function() {
-    var rules = getStyles().split('}')
+    var rules = this.getStyles().split('}')
     return rules
   },
 
@@ -217,6 +228,8 @@ var styleToSheet = {
         styles += ';\n'
       }
       styles += '}\n'
+
+    
     }
     this.styleEle.innerHTML = styles
   },
