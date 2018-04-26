@@ -163,6 +163,33 @@ var styleToSheet = {
   },
 
 
+  addStyle: function(ele, style, includeSiblings=false) {
+  // Autogenerate a tree-selector for ele, representing its
+  // (grand-)child- position within the body-ele and add a
+  // rule with the passed style. If includeSiblings is true,
+  // narrow selector down with sibling-pos, too, so only
+  // passed ele gets the style, sorry sis.
+    var i = 1
+    var eleOrig = ele
+    var selector = ''
+    while(ele.tagName.toLowerCase() != 'body') {
+      selector = ' > ' + ele.tagName.toLowerCase() + selector
+      ele = ele.parentNode
+    }
+    selector = ele.tagName.toLowerCase() + selector
+    ele = eleOrig
+    if(includeSiblings === true) {
+      while(ele.previousElementSibling !== null) {
+        i += 1
+        ele = ele.previousElementSibling
+      }
+      selector += ':nth-child(' + i + ')'
+    }
+
+    this.addRule(selector, style)
+  },
+
+
   addStyleEle: function() {
     var parentEle = document.getElementsByTagName('head')[0]
     var ele = document.createElement('style')
