@@ -150,43 +150,44 @@ var styleToSheet = {
     else {
       // Add new rule:
       this.rules.push([selector, props])
-    
+ 
       // Collect selector:
       this.selectors.push(selector)
     }
-    
-    
+ 
+ 
     // Set new rules:
     this.setStyles()
-    
-    
+ 
+ 
   },
 
 
-  addStyle: function(ele, style, includeSiblings=false) {
+  addStyle: function(ele, style, includeSiblings=true) {
   // Autogenerate a tree-selector for ele, representing its
   // (grand-)child- position within the body-ele and add a
-  // rule with the passed style. If includeSiblings is true,
+  // rule with the passed style. If includeSiblings is false,
   // narrow selector down with sibling-pos, too, so only
   // passed ele gets the style, sorry sis.
     var i = 1
-    var eleOrig = ele
+    var eleCurrent = ele
     var selector = ''
     while(ele.tagName.toLowerCase() != 'body') {
-      selector = ' > ' + ele.tagName.toLowerCase() + selector
-      ele = ele.parentNode
-    }
-    selector = ele.tagName.toLowerCase() + selector
-    ele = eleOrig
-    if(includeSiblings === true) {
+      eleCurrent = ele
       while(ele.previousElementSibling !== null) {
         i += 1
         ele = ele.previousElementSibling
       }
-      selector += ':nth-child(' + i + ')'
+      ele = eleCurrent
+      selector = ' > ' + ele.tagName.toLowerCase() + ':nth-child(' + i + ')' + selector
+      i = 1
+      ele = ele.parentNode
     }
+ 
+    selector = 'body' + selector
 
     this.addRule(selector, style)
+    return selector
   },
 
 
@@ -195,6 +196,15 @@ var styleToSheet = {
     var ele = document.createElement('style')
     parentEle.appendChild(ele)
     this.styleEle = ele
+  },
+
+
+  addStyles: function(styles) {
+    styles = styles.split('{')
+    var selector = styles[0]
+    var style = styles[1].split('}')[0]
+    console.debug(selector, style)
+    this.addRule(selector, style)
   },
 
 
@@ -253,7 +263,7 @@ var styleToSheet = {
       }
       styles += '}\n'
 
-    
+ 
     }
     this.styleEle.innerHTML = styles
   },
